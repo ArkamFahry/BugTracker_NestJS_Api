@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "Bug" ALTER COLUMN "issue_created" DROP DEFAULT,
+ALTER COLUMN "issue_created" SET DATA TYPE DATE,
+ALTER COLUMN "issue_closed" SET DATA TYPE DATE;

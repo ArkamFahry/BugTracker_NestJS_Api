@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Bug {
+  id            Int       @id @default(autoincrement())
+  project_id    Int
+  user_id       Int
+  name          String    @db.VarChar(255)
+  type          String    @db.VarChar(255)
+  description   String
+  sevierity     String    @db.VarChar(255)
+  progress      Int
+  issue_created DateTime  @db.Date
+  issue_closed  DateTime? @db.Date
+  Project       Project   @relation(fields: [project_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "bug_project_id_foreign")
+  User          User      @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "bug_user_id_foreign")
+  Tickets       Tickets[]
+
+  @@index([name, type, description, sevierity, issue_created, issue_closed], map: "bug_Index")
+}
+
+model Project {
+  id          Int           @id @default(autoincrement())
+  user_id     Int
+  name        String        @unique @db.VarChar(255)
+  type        String        @db.VarChar(255)
+  description String
+  User        User          @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "project_user_id_foreign")
+  Bug         Bug[]
+  ProjectUser ProjectUser[]
+
+  @@index([name, type, description], map: "project_name_type_description_index")
+}
+
+model ProjectUser {
+  id           Int     @id @default(autoincrement())
+  project_id   Int
+  project_user Int
+  Project      Project @relation(fields: [project_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "projectuser_project_id_foreign")
+  User         User    @relation(fields: [project_user], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "projectuser_project_user_foreign")
+}
+
+model Tickets {
+  id          Int       @id @default(autoincrement())
+  bug_id      Int
+  user_id     Int
+  created     DateTime  @db.Date
+  closed      DateTime? @db.Date
+  description String
+  type        String    @db.VarChar(255)
+  sevierity   String    @db.VarChar(255)
+  progress    Int
+  Bug         Bug       @relation(fields: [bug_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tickets_bug_id_foreign")
+  User        User      @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tickets_user_id_foreign")
+
+  @@index([created, closed, description, type, sevierity, progress], map: "tickets_Index")
+}
+
+model User {
+  id          Int           @id @default(autoincrement())
+  created_at  DateTime      @default(now())
+  update_at   DateTime      @updatedAt
+  name        String        @db.VarChar(255)
+  email       String        @unique(map: "user_email_unique") @db.VarChar(255)
+  phone       Int           @unique(map: "user_phone_unique")
+  hash        String        @unique(map: "user_hash_unique")
+  hashedRt    String?
+  role        String        @db.VarChar(255)
+  Bug         Bug[]
+  Project     Project[]
+  ProjectUser ProjectUser[]
+  Tickets     Tickets[]
+
+  @@index([name, email, phone], map: "user_name_email_phone_index")
+  @@map("users")
+}

@@ -1,0 +1,15 @@
+{
+    "eslint.workingDirectories": [
+      "api",
+      "client"
+    ],
+    
+    "cSpell.words": [
+      "nestjs",
+      "prebuild",
+      "sevierity",
+      "signin",
+      "strateges"
+    ],
+    "git.ignoreLimitWarning": true
+}
