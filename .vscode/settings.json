@@ -4,13 +4,7 @@
     ],
     
     "cSpell.words": [
-      "nestjs",
-      "prebuild",
-      "sevierity",
-      "signin",
-      "strateges",
-      "sveltejs",
-      "tailwindcss"
+      "nestjs"
     ],
     "git.ignoreLimitWarning": true
 }
