@@ -1,7 +1,6 @@
 {
     "eslint.workingDirectories": [
       "api",
-      "client"
     ],
     
     "cSpell.words": [
@@ -9,7 +8,9 @@
       "prebuild",
       "sevierity",
       "signin",
-      "strateges"
+      "strateges",
+      "sveltejs",
+      "tailwindcss"
     ],
     "git.ignoreLimitWarning": true
 }
